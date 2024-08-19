@@ -7,6 +7,7 @@ TagManager:
   - Ground
   - Wall
   - plr
+  - trap
   layers:
   - Default
   - TransparentFX
@@ -53,9 +54,9 @@ TagManager:
   - name: plr
     uniqueID: 732206977
     locked: 0
-  - name: frontground
-    uniqueID: 4122752767
-    locked: 0
   - name: projectiles
     uniqueID: 631522619
+    locked: 0
+  - name: frontground
+    uniqueID: 4122752767
     locked: 0

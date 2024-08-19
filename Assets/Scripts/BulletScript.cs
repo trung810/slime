@@ -9,14 +9,22 @@ public class BulletScript : MonoBehaviour
     private Rigidbody2D rb;
     [SerializeField] private float destroyTime;
     public float force;
+    private bool shooting = false;
     private Animator anim;
     void Start()
     {
         mainCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+    }
 
-        StartCoroutine(shoot());
+    void Update()
+    {
+        if(gameObject.activeInHierarchy && !shooting)
+        {
+            StartCoroutine(shoot());
+            shooting = true;
+        }
     }
 
     private IEnumerator shoot()
@@ -32,7 +40,8 @@ public class BulletScript : MonoBehaviour
 
         anim.SetBool("loop", true);
 
-        Destroy(gameObject, destroyTime);
+        //Destroy(gameObject, destroyTime);
+        Invoke("DisableBullet", destroyTime);
     }
     
     private void OnTriggerEnter2D(Collider2D other)
@@ -41,7 +50,16 @@ public class BulletScript : MonoBehaviour
         {
             anim.SetBool("onHit", true);
             rb.velocity = Vector2.zero;
-            Destroy(gameObject, .5f);
+
+            //Destroy(gameObject, .5f);
+            Invoke("DisableBullet", .5f);
         }
+    }
+
+    private void DisableBullet()
+    {
+        gameObject.SetActive(false);
+        shooting = false;
+        anim.SetBool("loop", false);
     }
 }

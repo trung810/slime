@@ -66,7 +66,11 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\BulletScript.cs" />
     <Compile Include="Assets\Scripts\plrMovement.cs" />
+    <Compile Include="Assets\Scripts\Enemy\waterFlow.cs" />
     <Compile Include="Assets\Scripts\shooting.cs" />
+    <Compile Include="Assets\Scripts\Health\Health.cs" />
+    <Compile Include="Assets\Scripts\ObjectPool.cs" />
+    <Compile Include="Assets\Scripts\Health\Healthbar.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

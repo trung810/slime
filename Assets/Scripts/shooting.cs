@@ -43,7 +43,15 @@ public class shooting : MonoBehaviour
         if(Input.GetMouseButton(0) && canFire)
         {
             canFire = false;
-            Instantiate(bullet, bulletspawnpoint.position, Quaternion.Euler(0, 0, angle));
+            //Instantiate(bullet, bulletspawnpoint.position, Quaternion.Euler(0, 0, angle));
+
+            GameObject bullet = ObjectPool.instance.GetPooledObject();
+            if(bullet!= null)
+            {
+                bullet.transform.position = bulletspawnpoint.position;
+                bullet.transform.rotation = Quaternion.Euler(0, 0, angle);
+                bullet.SetActive(true);
+            }
         }
     }
 }

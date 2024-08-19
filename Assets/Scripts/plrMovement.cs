@@ -16,10 +16,11 @@ public class plrMovement : MonoBehaviour
     private bool canStomp = true;
     private bool stomping = false;
     [SerializeField] private float speed;
-    [SerializeField] private float jump_power;
+    [SerializeField] private float jumpPower;
+    [SerializeField] private float stompPower;
+
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask wallLayer;
-    [SerializeField] private float stompPower;
     private void Awake()
     {
         body = GetComponent<Rigidbody2D>();
@@ -60,15 +61,15 @@ public class plrMovement : MonoBehaviour
         if (!holdingJump && !stomping)
         {
             body.velocity = new Vector2(horizontalInput * speed, body.velocity.y);
-            jumpMultiplier = jump_power;
+            jumpMultiplier = jumpPower;
         }
         else
         {
             body.velocity = new Vector2(horizontalInput * speed / 3, body.velocity.y);
 
-            if(jumpMultiplier > 2*jump_power)
+            if(jumpMultiplier > 2*jumpPower)
             {
-                jumpMultiplier = 2*jump_power;
+                jumpMultiplier = 2*jumpPower;
             }
             else
             {
@@ -81,6 +82,7 @@ public class plrMovement : MonoBehaviour
         {
             body.gravityScale = 30;
             transform.rotation = Quaternion.AngleAxis(Mathf.Sign(transform.localScale.x) * 90, Vector3.forward);
+
             body.velocity = new Vector2(body.velocity.x, verticalInput * speed);
             anim.SetBool("grounded", true);
         }
@@ -98,10 +100,11 @@ public class plrMovement : MonoBehaviour
         }
         if(Input.GetKeyDown(KeyCode.LeftControl) && !isGrounded() && canStomp)
         {
-            StartCoroutine(stompHandler());
+            StartCoroutine(stomp());
         }
     }
-    private IEnumerator stompHandler()
+
+    private IEnumerator stomp()
     {
         body.velocity = Vector2.zero;
 
@@ -111,6 +114,7 @@ public class plrMovement : MonoBehaviour
         canStomp = false;
         stomping = true;
     }
+
     private IEnumerator Jump()
     {
         anim.SetBool("holdingJump", false);
