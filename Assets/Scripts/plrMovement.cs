@@ -18,6 +18,8 @@ public class plrMovement : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private float jumpPower;
     [SerializeField] private float stompPower;
+    [SerializeField] private GameObject run_fx;
+
 
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask wallLayer;
@@ -98,7 +100,7 @@ public class plrMovement : MonoBehaviour
             canStomp = true;
             stomping = false;
         }
-        if(Input.GetKeyDown(KeyCode.LeftControl) && !isGrounded() && canStomp)
+        if(Input.GetKeyDown(KeyCode.S) && !isGrounded() && canStomp)
         {
             StartCoroutine(stomp());
         }

@@ -27,7 +27,7 @@ public class waterFlow : MonoBehaviour
             StartCoroutine(onHit());
             collision.GetComponent<Health>().TakeDamage(damage);
             var rb = collision.GetComponent<Rigidbody2D>();
-            rb.velocity = new Vector2(-horizontalInput * knockBackPower /3, knockBackPower);
+            rb.velocity = new Vector2(-Mathf.Sign(horizontalInput) * knockBackPower / 3, knockBackPower);
         }
     }
 

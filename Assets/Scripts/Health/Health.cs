@@ -28,9 +28,24 @@ public class Health : MonoBehaviour
             if(!dead)
             {
                 anim.SetTrigger("die");
-                GetComponent<plrMovement>().enabled = false;
+                
+                if(GetComponent<plrMovement>() != null)
+                {
+                    GetComponent<plrMovement>().enabled = false;
+                }
+                
+                //enemy
+                if(gameObject.tag == "Enemy")
+                {
+                    Invoke("destroy_enemy", 1f);
+                }
                 dead = true;
             }
         }
+    }
+
+    private void destroy_enemy()
+    {
+        Destroy(gameObject);
     }
 }

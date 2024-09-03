@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BulletScript : MonoBehaviour
@@ -8,6 +9,8 @@ public class BulletScript : MonoBehaviour
     private Camera mainCam;
     private Rigidbody2D rb;
     [SerializeField] private float destroyTime;
+    [SerializeField] private float dmg;
+
     public float force;
     private bool shooting = false;
     private Animator anim;
@@ -38,7 +41,7 @@ public class BulletScript : MonoBehaviour
 
         rb.velocity = new Vector2(dir.x, dir.y).normalized * force;
 
-        anim.SetBool("loop", true);
+        anim.SetTrigger("loop");
 
         //Destroy(gameObject, destroyTime);
         Invoke("DisableBullet", destroyTime);
@@ -46,11 +49,15 @@ public class BulletScript : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Ground" || other.gameObject.tag == "Wall")
+        if (other.gameObject.tag == "Ground" || other.gameObject.tag == "Wall" || other.gameObject.tag == "Enemy")
         {
-            anim.SetBool("onHit", true);
+            anim.SetTrigger("onHit");
             rb.velocity = Vector2.zero;
 
+            if(other.gameObject.tag == "Enemy")
+            {
+                other.gameObject.GetComponent<Health>().TakeDamage(dmg);
+            }
             //Destroy(gameObject, .5f);
             Invoke("DisableBullet", .5f);
         }
@@ -60,6 +67,5 @@ public class BulletScript : MonoBehaviour
     {
         gameObject.SetActive(false);
         shooting = false;
-        anim.SetBool("loop", false);
     }
 }
