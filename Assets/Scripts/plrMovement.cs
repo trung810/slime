@@ -14,6 +14,7 @@ public class plrMovement : MonoBehaviour
     private bool holdingJump = false;
     private float jumpMultiplier;
     private bool canStomp = true;
+    private bool walking = false;
     private bool stomping = false;
     [SerializeField] private float speed;
     [SerializeField] private float jumpPower;
@@ -60,6 +61,25 @@ public class plrMovement : MonoBehaviour
         }
 
         //movement left-right
+
+        if(horizontalInput == 0)
+        {
+            walking = false;
+        }
+        else
+        {
+            if (!walking)
+            {
+                walking = true;
+
+                GameObject fx = Instantiate(
+                run_fx, gameObject.transform.position + new Vector3(-Mathf.Sign(gameObject.transform.localScale.x) * 15, 2)
+                ,Quaternion.Euler(0, 0, 0));
+                fx.transform.localScale = new Vector3(Mathf.Sign(gameObject.transform.localScale.x)*7, 7, 1);
+                Destroy(fx, .5f);
+            }
+        }
+
         if (!holdingJump && !stomping)
         {
             body.velocity = new Vector2(horizontalInput * speed, body.velocity.y);

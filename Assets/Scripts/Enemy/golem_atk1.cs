@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEditor.ShortcutManagement;
 using UnityEngine;
 
@@ -17,6 +18,7 @@ public class golemAI : MonoBehaviour
 
     private float cdTimer = Mathf.Infinity;
     private Animator anim;
+    private Transform plr;
     private Health plrHealth;
     private Rigidbody2D rb;
     private float horizontalInput;
@@ -46,10 +48,18 @@ public class golemAI : MonoBehaviour
 
         if(enemyPatrol != null)
         {
-            enemyPatrol.enabled = !plrInSight();
+            if(plrInSight())
+            {
+                enemyPatrol.enabled = false;
+                StartCoroutine(movementEnable());
+            }
         }
     }
-
+    private IEnumerator movementEnable()
+    {
+        yield return new WaitForSeconds(1f);
+        enemyPatrol.enabled = true;
+    }
     private bool plrInSight()
     {
         RaycastHit2D hit = Physics2D.BoxCast(boxCollider.bounds.center + transform.right * range * Mathf.Sign(transform.localScale.x) * colliderDistance,
@@ -57,8 +67,9 @@ public class golemAI : MonoBehaviour
 
         if(hit.collider != null)
         {
-            plrHealth = hit.transform.GetComponent<Health>();
-            rb = hit.transform.GetComponent<Rigidbody2D>();
+            plr = hit.transform;
+            plrHealth = plr.GetComponent<Health>();
+            rb = plr.GetComponent<Rigidbody2D>();
         }
 
         return hit.collider!=null;
@@ -76,7 +87,7 @@ public class golemAI : MonoBehaviour
         if(plrInSight())
         {
             plrHealth.TakeDamage(dmg);
-            rb.velocity = new Vector2(-Mathf.Sign(horizontalInput) * knockBackPower, knockBackPower*2);
+            rb.velocity = new Vector2(-Mathf.Sign(plr.localScale.x) * knockBackPower, knockBackPower*2);
         }
     }
 }

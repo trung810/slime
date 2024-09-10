@@ -6,13 +6,17 @@ using UnityEngine;
 public class Health : MonoBehaviour
 {
     [SerializeField] private float startingHealth;
+
     public float currHealth {get; private set; }
     private Animator anim;
+    private Rigidbody2D rb;
+
     private bool dead = false;
     private void Awake()
     {
         currHealth = startingHealth;
         anim = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
     }
     public void TakeDamage(float _damage)
     {
@@ -37,14 +41,14 @@ public class Health : MonoBehaviour
                 //enemy
                 if(gameObject.tag == "Enemy")
                 {
-                    Invoke("destroy_enemy", 1f);
+                    Invoke("die", 1f);
                 }
                 dead = true;
             }
         }
     }
 
-    private void destroy_enemy()
+    private void die()
     {
         Destroy(gameObject);
     }
